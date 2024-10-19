@@ -1,5 +1,5 @@
-import Servico from "../Model/Servico";
-import conectar from "./Conexao";
+import Servico from "../Model/Servico.js";
+import conectar from "./Conexao.js";
 
 export default class ServicoDAO {
     constructor() {

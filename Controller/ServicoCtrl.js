@@ -1,4 +1,4 @@
-import Servico from "../Model/Servico";
+import Servico from "../Model/Servico.js";
 
 export default class ServicoCtrl {
     // Traduzir comandos http em ações negociais

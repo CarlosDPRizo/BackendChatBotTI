@@ -1,4 +1,4 @@
-import ServicoDAO from "../DB/ServicoDAO"
+import ServicoDAO from "../DB/ServicoDAO.js"
 
 export default class Servico{
     #id
