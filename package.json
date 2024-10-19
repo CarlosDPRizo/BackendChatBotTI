@@ -1,0 +1,21 @@
+{
+  "name": "backendchatbotti",
+  "version": "1.0.0",
+  "description": "Backend Webhook para meu agente do DialogFlow",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start":"node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RenatoFernandoSilvaGoncalves/backendChatBotTI.git"
+  },
+  "author": "Renato Gonçalves",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RenatoFernandoSilvaGoncalves/backendChatBotTI/issues"
+  },
+  "homepage": "https://github.com/RenatoFernandoSilvaGoncalves/backendChatBotTI#readme"
+}
