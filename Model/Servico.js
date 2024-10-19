@@ -8,6 +8,24 @@ export default class Servico{
     #tempoInicioAtendimento
     #tempoSolucao
 
+    constructor(
+        id = 0,
+        nome,
+        descricao,
+        valor = 0,
+        urlImagem = "",
+        tempoInicioAtendimento = 4,
+        tempoSolucao = 24,
+    ) {
+        this.#id = id;
+        this.#nome = nome;
+        this.#descricao = descricao;
+        this.#valor = valor;
+        this.#urlImagem = urlImagem;
+        this.#tempoInicioAtendimento = tempoInicioAtendimento;
+        this.#tempoSolucao = tempoSolucao;
+    }
+
     get id(){
         return this.#id;
     }
@@ -78,9 +96,19 @@ export default class Servico{
 
     }
 
-    async gravar(){}
-    async alterar(){}
-    async excluir(){}
-    async consulta(){}
+    async gravar(){
 
+    }
+
+    async alterar(){
+
+    }
+
+    async excluir(){
+
+    }
+
+    async consulta(){
+
+    }
 }
