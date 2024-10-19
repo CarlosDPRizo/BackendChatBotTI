@@ -1,3 +1,5 @@
+import ServicoDAO from "../DB/ServicoDAO"
+
 export default class Servico{
     #id
     #nome
@@ -26,47 +28,47 @@ export default class Servico{
         this.#tempoSolucao = tempoSolucao;
     }
 
-    get id(){
+    get id() {
         return this.#id;
     }
     
-    set id(novoId){
+    set id(novoId) {
         this.#id = novoId;
     }
 
-    get nome(){
+    get nome() {
         return this.#nome
     }
 
-    set nome(novoNome){
+    set nome(novoNome) {
         this.#nome = novoNome
     }
 
-    get descricao(){
+    get descricao() {
         return this.#descricao;
     }
 
-    set descricao(novaDesc){
+    set descricao(novaDesc) {
         this.#descricao=novaDesc;
     }
 
-    get valor(){
+    get valor() {
         return this.#valor;
     }
 
-    set valor(novoValor){
+    set valor(novoValor) {
         this.#valor=novoValor;
     }
 
-    get urlImagem(){
+    get urlImagem() {
         return this.#urlImagem;
     }
 
-    set urlImagem(novaUrl){
+    set urlImagem(novaUrl) {
         this.#urlImagem=novaUrl;
     }
 
-    get tempoInicioAtendimento(){
+    get tempoInicioAtendimento() {
         return this.#tempoInicioAtendimento
     }
 
@@ -74,16 +76,16 @@ export default class Servico{
         this.#tempoInicioAtendimento=novoTempo;
     }
 
-    get tempoSolucao(){
+    get tempoSolucao() {
         return this.#tempoSolucao;
     }
 
-    set tempoSolucao(novoTempo){
+    set tempoSolucao(novoTempo) {
         this.#tempoSolucao=novoTempo;
     }
 
     //override 
-    toJSON(){
+    toJSON() {
         return {
             id:this.#id,
             nome:this.#nome,
@@ -96,19 +98,23 @@ export default class Servico{
 
     }
 
-    async gravar(){
-
+    async gravar() {
+        const servDAO = new ServicoDAO();
+        await servDAO.gravar(this);
     }
 
-    async alterar(){
-
+    async alterar() {
+        const servDAO = new ServicoDAO();
+        await servDAO.alterar(this);
     }
 
-    async excluir(){
-
+    async excluir() {
+        const servDAO = new ServicoDAO();
+        await servDAO.excluir(this);
     }
 
-    async consulta(){
-
+    async consultar() {
+        const servDAO = new ServicoDAO();
+        return await servDAO.consultar(this);
     }
 }
