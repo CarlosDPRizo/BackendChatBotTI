@@ -19,9 +19,13 @@ export default class DFController {
     } // fim processar intenções
 }
 
-async function exibirMenu(tipo = 'custom') {
+async function exibirMenu(tipo = '') {
     let resposta = {
         "fulfillmentMessages": []
+    }
+
+    if (tipo) {
+        tipo = 'custom';
     }
 
     try {
