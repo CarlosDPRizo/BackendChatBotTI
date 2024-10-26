@@ -28,18 +28,16 @@ export function criarCustomCard(){
             ]
         }
     }
-    
 } // fim da função criarCustomCard
 
 export async function obterCardsServicos(tipoCard="custom"){
-
     const listaCardsServicos = [];
     const servico = new Servico();
     const servicos = await servico.consultar();
 
     for (const servico of servicos){
-
         let card;
+
         if (tipoCard=="custom"){
             card = criarCustomCard();
             card.card.title = servico.nome;
@@ -51,8 +49,7 @@ export async function obterCardsServicos(tipoCard="custom"){
             `;
             card.card.imageUri = servico.urlImagem;
             card.card.buttons[0].postback = "https://www.zendesk.com.br/";
-        }
-        else{
+        } else{
             card = criarMessengerCard();
             card.title = servico.nome;
             card.subtitle = `
@@ -69,5 +66,4 @@ export async function obterCardsServicos(tipoCard="custom"){
     }
 
     return listaCardsServicos;
-
 }
