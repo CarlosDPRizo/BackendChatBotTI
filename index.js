@@ -11,6 +11,8 @@ app.use(express.urlencoded({extended:true}));
 app.use("/servico", rotaServico);
 app.use('/webhook', rotaDF);
 
+app.use(express.static('./Public'));
+
 const host = "localhost";
 const porta = "3000";
 

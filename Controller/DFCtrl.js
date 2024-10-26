@@ -1,4 +1,5 @@
 import { obterCardsServicos } from "../DialogFlow/funcoes.js";
+import Chamado from "../Model/Chamado.js";
 import Servico from "../Model/Servico.js";
 
 export default class DFController {
@@ -17,6 +18,12 @@ export default class DFController {
                     break;
                 case 'SelecaoSuporte':
                     resposta = await processarEscolha(dados, origem);
+                    break;
+                // case 'coletaDadosDemandante':
+                //     resposta = await identificarUsuario(dados, origem);
+                //     break;
+                case 'simConcluirDemanda':
+                    resposta = await registrarChamado(dados, origem);
                     break;
                 // default: 
                 //     // Criar uma resposta padrão para o default
@@ -133,7 +140,7 @@ async function processarEscolha(dados, origem) { // Aplicar um try catch
     }
 
     let servicosSelecionados = dados.queryResult.parameters.Servico;
-    global.dados[sessao]['servicos'].push(...servicosSelecionados);
+    global.dados[sessao]['servicos'].push(...servicosSelecionados); // Gravar os dados na sessão
 
     let listaMensagens = [];
     for (const serv of servicosSelecionados) {
@@ -162,6 +169,60 @@ async function processarEscolha(dados, origem) { // Aplicar um try catch
                     "type": "description",
                     "title": "",
                     "text": [...listaMensagens]
+                }]]
+            }
+        });
+    }
+
+    return resposta;
+}
+
+async function registrarChamado(dados, origem) {
+    const sessao = dados.session.split('/').pop();
+    // Fique atento, será necessário recuperar o usuário identificado na sessão
+    const usuario = {
+        "cpf":"111.111.111-11"
+    }
+
+    let listaDeServicos = [];
+    const servicosSelecionados = global.dados[sessao]['servicos'];
+    const servicoM = new Servico();
+
+    for (const serv of servicosSelecionados) {
+        const busca = await servicoM.consultar(serv);
+
+        if (busca.length > 0 ) {
+            listaDeServicos.push(busca[0]); // primeiro serviço da lista
+        }
+    }
+
+    const chamado = new Chamado(0, '', usuario, listaDeServicos);
+    await chamado.gravar();
+
+    let resposta = {
+        "fulfillmentMessages": []
+    }
+
+    
+    if (origem) {
+        resposta['fulfillmentMessages'].push({
+            "text": {
+                "text" :[
+                    `Chamado nº ${chamado.numero} registrado com sucesso. \n`, // O número está vindo como 0
+                    "Anote o número para consulta ou acompanhamento posterior"
+                ]
+            }
+        });
+    } else {
+        resposta.fulfillmentMessages.push({
+            "payload": {
+                "richContent": [[{
+                    "type": "description",
+                    "title": "",
+                    "text" :[
+                        `Chamado nº ${chamado.numero} registrado com sucesso. \n`, // O número está vindo como 0
+                        "Anote o número para consulta ou acompanhamento posterior"
+                    ]
                 }]]
             }
         });
