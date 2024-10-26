@@ -6,6 +6,7 @@ const rotaServico = Router();
 
 rotaServico
     .get("/", servCtrl.consultar)
+    .get("/:servico", servCtrl.consultar)
     .post("/", servCtrl.gravar)
     .put("/", servCtrl.alterar)
     .put("/", servCtrl.alterar)

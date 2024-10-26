@@ -1,4 +1,5 @@
 import { obterCardsServicos } from "../DialogFlow/funcoes.js";
+import Servico from "../Model/Servico.js";
 
 export default class DFController {
     async processarIntencoes(req, resp) {
@@ -8,13 +9,21 @@ export default class DFController {
             // Identificar a origem da requisição (custom ou messenger)
                 // vetrificar a existência do atributo source
             const origem = dados?.originalDetectIntentRequest?.source;
+            let resposta;
 
             switch(intencao) {
                 case 'Default Welcome Intent':
-                    const resposta = await exibirMenu(origem);
-                    resp.json(resposta);
+                    resposta = await exibirMenu(origem);
                     break;
+                case 'SelecaoSuporte':
+                    resposta = await processarEscolha(dados, origem);
+                    break;
+                // default: 
+                //     // Criar uma resposta padrão para o default
+                //     break;
             }
+
+            resp.json(resposta);
         }
     } // fim processar intenções
 }
@@ -84,7 +93,7 @@ async function exibirMenu(tipo = '') {
                     "text" :[
                         "Não foi possível recuperar a lista de suporte dos serviços disponíveis.",
                         "Desculpe-nos pelo transtorno!",
-                        "Entre em contato conosco por telefone (18) 3226-1515."
+                        "Entre em contato conosco por telefone ☎ (18) 3226-1515."
                     ]
                 }
             });
@@ -96,7 +105,7 @@ async function exibirMenu(tipo = '') {
                         "title": "Não foi possível recuperar a lista de suporte dos serviços disponíveis.",
                         "text": [
                             "Desculpe-nos pelo transtorno!",
-                            "Entre em contato conosco por telefone (18) 3226-1515."
+                            "Entre em contato conosco por telefone ☎ (18) 3226-1515."
                         ]
                     }]]
                 }
@@ -105,4 +114,58 @@ async function exibirMenu(tipo = '') {
 
         return resposta;
     }
+}
+
+async function processarEscolha(dados, origem) { // Aplicar um try catch
+    let resposta = {
+        "fulfillmentMessages": []
+    }
+
+    const sessao = dados.session.split('/').pop();
+    if (!global.dados) {
+        global.dados = {};
+    }
+
+    if (!global.dados[sessao]) {
+        global.dados[sessao] = {
+            'servicos':[]
+        }
+    }
+
+    let servicosSelecionados = dados.queryResult.parameters.Servico;
+    global.dados[sessao]['servicos'].push(...servicosSelecionados);
+
+    let listaMensagens = [];
+    for (const serv of servicosSelecionados) {
+        const servico = new Servico();
+        const resultado = await servico.consultar(serv);
+
+        if (resultado.length > 0) {
+            listaMensagens.push(`✅ ${serv} registrado com sucesso! \n`);
+        } else {
+            listaMensagens.push(`❌ O ${serv} não está disponível! \n`);
+        }
+    }
+
+    listaMensagens.push('Posso de ajudar em algo mais?');
+
+    if (origem) {
+        resposta['fulfillmentMessages'].push({
+            "text": {
+                "text" :[...listaMensagens]
+            }
+        });
+    } else {
+        resposta.fulfillmentMessages.push({
+            "payload": {
+                "richContent": [[{
+                    "type": "description",
+                    "title": "",
+                    "text": [...listaMensagens]
+                }]]
+            }
+        });
+    }
+
+    return resposta;
 }

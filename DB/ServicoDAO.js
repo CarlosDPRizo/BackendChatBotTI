@@ -96,15 +96,21 @@ export default class ServicoDAO {
         }
     }
 
-    async consultar() {
+    async consultar(termoBusca) {
+        if (!termoBusca) {
+            termoBusca = '';
+        }
+
         const sql = `
             SELECT *
             FROM servico
+            WHERE descricao LIKE ?
             ORDER BY nome
         `;
 
+        const parametros = ["%" + termoBusca + "%"];
         const conexao = await conectar();
-        const [registros, campos] = await conexao.query(sql);
+        const [registros, campos] = await conexao.query(sql,parametros);
         let listaServicos = [];
 
         for (const registro of registros) {
