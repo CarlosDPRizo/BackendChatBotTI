@@ -135,7 +135,7 @@ export default class ServicoCtrl {
     
     consultar(requisicao, resposta) {
         if(requisicao.method == "GET") {
-            const servico = new Servico(id);
+            const servico = new Servico(0);
 
             servico.consultar()
                 .then((listaServicos) => {

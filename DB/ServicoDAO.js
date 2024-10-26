@@ -25,7 +25,7 @@ export default class ServicoDAO {
             await conexao.execute(sql);
             console.log("Tabela Serviço iniciada com sucesso!");
         } catch(error) {
-            console.log("Não foi possível iniciar a tablea serviço: " + error.message)
+            console.log("Não foi possível iniciar a tabela serviço: " + error.message)
         }
     }
 
