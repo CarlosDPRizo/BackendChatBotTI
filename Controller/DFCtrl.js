@@ -25,12 +25,6 @@ export default class DFController {
                 case 'AvaliarConversa':
                     resposta = await registrarLog(dados, origem);
                     break;
-                // case 'simConcluirDemanda':
-                //     resposta = await registrarLog(dados, origem);
-                //     break;
-                // default: 
-                //     // Criar uma resposta padrão para o default
-                //     break;
             }
 
             resp.json(resposta);
