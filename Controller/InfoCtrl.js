@@ -1,6 +1,6 @@
-import Servico from "../Model/Servico.js";
+import Info from "../Model/Info.js";
 
-export default class ServicoCtrl {
+export default class InfoCtrl {
     // Traduzir comandos http em ações negociais
     // Conceito REST
     // Considerar o protocolo HTTP
@@ -11,31 +11,28 @@ export default class ServicoCtrl {
 
             // pseudo validação
             if (
-                dados.nome && dados.descricao && dados.valor >= 0 && dados.urlImagem 
-                && dados.tempoInicioAtendimento > 0 && dados.tempoSolucao > 0
+                dados.nome && dados.descricao && dados.status && dados.urlImagem
             ) {
-                const servico = new Servico(
+                const servico = new Info(
                     0,
                     dados.nome,
                     dados.descricao,
-                    dados.valor,
-                    dados.urlImagem,
-                    dados.tempoInicioAtendimento,
-                    dados.tempoSolucao
+                    dados.status,
+                    dados.urlImagem
                 );
 
                 servico.gravar()
                     .then(() => {
                         resposta.status(201).json({
                             "status": true,
-                            "mensagem": "Serviço gravado com sucesso!",
+                            "mensagem": "Info gravada com sucesso!",
                             "id": servico.id
                         });
                     })
                     .catch((error) => {
                         resposta.status(500).json({
                             "status": false,
-                            "mensagem": "Erro ao registrar o serviço: " + error.message
+                            "mensagem": "Erro ao registrar a info: " + error.message
                         });
                     });
             } else {
@@ -58,30 +55,27 @@ export default class ServicoCtrl {
 
             // pseudo validação
             if (
-                dados.id && dados.nome && dados.descricao && dados.valor >= 0 
-                && dados.urlImagem && dados.tempoInicioAtendimento > 0 && dados.tempoSolucao > 0
+                dados.id && dados.nome && dados.descricao && dados.status  && dados.urlImagem
             ) {
-                const servico = new Servico(
+                const servico = new Info(
                     dados.id,
                     dados.nome,
                     dados.descricao,
-                    dados.valor,
-                    dados.urlImagem,
-                    dados.tempoInicioAtendimento,
-                    dados.tempoSolucao
+                    dados.status,
+                    dados.urlImagem
                 );
 
                 servico.alterar()
                     .then(() => {
                         resposta.status(200).json({
                             "status": true,
-                            "mensagem": "Serviço alterado com sucesso!"
+                            "mensagem": "Info alterada com sucesso!"
                         });
                     })
                     .catch((error) => {
                         resposta.status(500).json({
                             "status": false,
-                            "mensagem": "Erro ao alterar o serviço: " + error.message
+                            "mensagem": "Erro ao alterar a info: " + error.message
                         });
                     });
             } else {
@@ -104,19 +98,19 @@ export default class ServicoCtrl {
 
             // pseudo validação
             if (id > 0) {
-                const servico = new Servico(id);
+                const info = new Info(id);
 
-                servico.excluir()
+                info.excluir()
                     .then(() => {
                         resposta.status(200).json({
                             "status": true,
-                            "mensagem": "Serviço excluído com sucesso!"
+                            "mensagem": "Info excluída com sucesso!"
                         });
                     })
                     .catch((error) => {
                         resposta.status(500).json({
                             "status": false,
-                            "mensagem": "Erro ao excluir o serviço: " + error.message
+                            "mensagem": "Erro ao excluir a info: " + error.message
                         });
                     });
             } else {
@@ -134,21 +128,21 @@ export default class ServicoCtrl {
     }
     
     consultar(requisicao, resposta) {
-        const termoBusca = requisicao.params.servico;
+        const termoBusca = requisicao.params.info;
         if(requisicao.method == "GET") {
-            const servico = new Servico(0);
+            const info = new Info(0);
 
-            servico.consultar(termoBusca)
-                .then((listaServicos) => {
+            info.consultar(termoBusca)
+                .then((listaInfos) => {
                     resposta.status(200).json({
                         "status": true,
-                        listaServicos
+                        listaInfos
                     });
                 })
                 .catch((error) => {
                     resposta.status(500).json({
                         "status": false,
-                        "mensagem": "Não foi possível recuperar os serviços: " + error.message
+                        "mensagem": "Não foi possível recuperar as infos: " + error.message
                     });
                 });
         } else {

@@ -1,5 +1,5 @@
 import express from 'express';
-import rotaServico from './Routes/rotaServico.js';
+import rotaInfo from './Routes/rotaInfo.js';
 import rotaDF from './Routes/rotaDF.js';
 import dotenv from 'dotenv'
 
@@ -8,7 +8,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-app.use("/servico", rotaServico);
+app.use("/info", rotaInfo);
 app.use('/webhook', rotaDF);
 
 app.use(express.static('./Public'));

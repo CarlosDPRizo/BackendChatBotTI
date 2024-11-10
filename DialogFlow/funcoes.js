@@ -1,4 +1,4 @@
-import Servico from "../Model/Servico.js"
+import Info from "../Model/Info.js"
 export function criarMessengerCard(){
     return {
         type:"info",
@@ -30,36 +30,31 @@ export function criarCustomCard(){
     }
 } // fim da função criarCustomCard
 
-export async function obterCardsServicos(tipoCard="custom"){
+export async function obterCardsInfos(tipoCard="custom"){
     const listaCardsServicos = [];
-    const servico = new Servico();
-    const servicos = await servico.consultar();
+    const info = new Info();
+    const infos = await info.consultar();
 
-    for (const servico of servicos){
+
+    for (const info of infos){
         let card;
 
         if (tipoCard=="custom"){
             card = criarCustomCard();
-            card.card.title = servico.nome;
+            card.card.title = info.nome;
             card.card.subtitle = `
-                Descrição: ${servico.descricao} \n
-                Valor: ${servico.valor} \n
-                Prazo para iniciar atendimento: ${servico.tempoInicioAtendimento} \n
-                Prazo para solução: ${servico.tempoSolucao}
+                Descrição: ${info.descricao}
             `;
-            card.card.imageUri = servico.urlImagem;
-            card.card.buttons[0].postback = "https://www.zendesk.com.br/";
+            card.card.imageUri = info.urlImagem;
+            card.card.buttons[0].postback = "https://www.ibati.com.br/";
         } else{
             card = criarMessengerCard();
-            card.title = servico.nome;
+            card.title = info.nome;
             card.subtitle = `
-                Descrição: ${servico.descricao} \n
-                Valor: ${servico.valor} \n
-                Prazo para iniciar atendimento: ${servico.tempoInicioAtendimento} \n
-                Prazo para solução: ${servico.tempoSolucao}
+                Descrição: ${info.descricao}
             `;
-            card.image.src.rawUrl = servico.urlImagem;
-            card.actionLink = "https://www.zendesk.com.br/";
+            card.image.src.rawUrl = info.urlImagem;
+            card.actionLink = "https://www.ibati.com.br/";
         }
 
         listaCardsServicos.push(card);

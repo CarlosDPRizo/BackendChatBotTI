@@ -1,7 +1,7 @@
-import Servico from "../Model/Servico.js";
+import Info from "../Model/Info.js";
 import conectar from "./Conexao.js";
 
-export default class ServicoDAO {
+export default class InfoDAO {
     constructor() {
         this.init();
     }
@@ -10,69 +10,61 @@ export default class ServicoDAO {
         try {
             // Criar a tabela serviço caso ela não exista
             const sql = `
-                CREATE TABLE IF NOT EXISTS servico(
+                CREATE TABLE IF NOT EXISTS info(
                     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
                     nome VARCHAR(100) NOT NULL,
                     descricao VARCHAR(200) NOT NULL,
-                    valor DECIMAL(6,2) NOT NULL,
-                    urlImagem VARCHAR(200) NOT NULL,
-                    tempoInicioAtendimento INT NOT NULL,
-                    tempoSolucao INT NOT NULL
+                    status VARCHAR(100) NOT NULL,
+                    urlImagem VARCHAR(500) NOT NULL
                 )
             `;
     
             const conexao = await conectar();
             await conexao.execute(sql);
-            console.log("Tabela Serviço iniciada com sucesso!");
+            console.log("Tabela info iniciada com sucesso!");
         } catch(error) {
-            console.log("Não foi possível iniciar a tabela serviço: " + error.message)
+            console.log("Não foi possível iniciar a tabela info: " + error.message)
         }
     }
 
-    async gravar(servico) {
-        if (servico instanceof Servico) {
+    async gravar(info) {
+        if (info instanceof Info) {
             const sql = `
-                INSERT INTO servico (nome,descricao,valor,urlImagem,tempoInicioAtendimento,tempoSolucao)
+                INSERT INTO info (nome,descricao,status,urlImagem)
                 VALUES (?,?,?,?,?,?)
             `;
 
             const parametros = [
-                servico.nome,
-                servico.descricao,
-                servico.valor,
-                servico.urlImagem,
-                servico.tempoInicioAtendimento,
-                servico.tempoSolucao
+                info.nome,
+                info.descricao,
+                info.status,
+                info.urlImagem
             ];
 
             const conexao = await conectar();
             const resultado = await conexao.execute(sql,parametros);
-            servico.id = resultado[0].insertId;
+            info.id = resultado[0].insertId;
         }
     }
 
-    async alterar(servico) {
-        if (servico instanceof Servico) {
+    async alterar(info) {
+        if (info instanceof Info) {
             const sql = `
-                UPDATE servico 
+                UPDATE info 
                     SET
                         nome = ?,
                         descricao = ?,
-                        valor = ?,
-                        urlImagem = ?,
-                        tempoInicioAtendimento = ?,
-                        tempoSolucao = ?
+                        status = ?,
+                        urlImagem = ?
                     WHERE id= ?
             `;
 
             const parametros = [
-                servico.nome,
-                servico.descricao,
-                servico.valor,
-                servico.urlImagem,
-                servico.tempoInicioAtendimento,
-                servico.tempoSolucao,
-                servico.id
+                info.nome,
+                info.descricao,
+                info.status,
+                info.urlImagem,
+                info.id
             ];
 
             const conexao = await conectar();
@@ -80,15 +72,15 @@ export default class ServicoDAO {
         }
     }
 
-    async excluir(servico) {
-        if (servico instanceof Servico) {
+    async excluir(info) {
+        if (info instanceof Info) {
             const sql = `
-                DELETE FROM servico 
+                DELETE FROM info 
                     WHERE id= ?
             `;
 
             const parametros = [
-                servico.id
+                info.id
             ];
 
             const conexao = await conectar();
@@ -103,7 +95,7 @@ export default class ServicoDAO {
 
         const sql = `
             SELECT *
-            FROM servico
+            FROM info
             WHERE descricao LIKE ?
             ORDER BY nome
         `;
@@ -114,17 +106,15 @@ export default class ServicoDAO {
         let listaServicos = [];
 
         for (const registro of registros) {
-            const servico = new Servico(
+            const info = new Info(
                 registro['id'],
                 registro['nome'],
                 registro['descricao'],
-                registro['valor'],
-                registro['urlImagem'],
-                registro['tempoInicioAtendimento'],
-                registro['tempoSolucao']
+                registro['status'],
+                registro['urlImagem']
             );
 
-            listaServicos.push(servico);
+            listaServicos.push(info);
         }
 
         return listaServicos;

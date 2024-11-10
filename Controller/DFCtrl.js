@@ -1,6 +1,6 @@
-import { obterCardsServicos } from "../DialogFlow/funcoes.js";
-import Chamado from "../Model/Chamado.js";
-import Servico from "../Model/Servico.js";
+import { obterCardsInfos } from "../DialogFlow/funcoes.js";
+import LogInfo from "../Model/LogInfo.js";
+import Info from "../Model/Info.js";
 
 export default class DFController {
     async processarIntencoes(req, resp) {
@@ -13,18 +13,21 @@ export default class DFController {
             let resposta;
 
             switch(intencao) {
-                case 'Default Welcome Intent':
+                case 'InformarProtocoloNome':
                     resposta = await exibirMenu(origem);
                     break;
-                case 'SelecaoSuporte':
+                case 'ApresentarOpcoes':
                     resposta = await processarEscolha(dados, origem);
                     break;
-                // case 'coletaDadosDemandante':
-                //     resposta = await identificarUsuario(dados, origem);
-                //     break;
-                case 'simConcluirDemanda':
-                    resposta = await registrarChamado(dados, origem);
+                case 'ConcluirInformarProtocoloNome':
+                    resposta = await devolverEscolhas(dados, origem);
                     break;
+                case 'AvaliarConversa':
+                    resposta = await registrarLog(dados, origem);
+                    break;
+                // case 'simConcluirDemanda':
+                //     resposta = await registrarLog(dados, origem);
+                //     break;
                 // default: 
                 //     // Criar uma resposta padrão para o default
                 //     break;
@@ -45,15 +48,15 @@ async function exibirMenu(tipo = '') {
     }
 
     try {
-        let cards = await obterCardsServicos(tipo);
+        let cards = await obterCardsInfos(tipo);
 
         if (tipo == 'custom') {
             resposta['fulfillmentMessages'].push({
                 "text": {
                     "text": [
-                        "Seja bem-vindo ao suporte de TI. \n",
+                        "Tudo certo, Carlos! \n",
                         "Estamos disponíveis 24h por dia e 7 na semana. \n",
-                        "Estamos preparados para te ajudar com os seguintes serviços: \n"
+                        "Estamos preparados para te ajudar com as seguintes informações: \n"
                     ]
                 }
             });
@@ -74,10 +77,10 @@ async function exibirMenu(tipo = '') {
                 "payload": {
                     "richContent": [[{
                         "type": "description",
-                        "title": "Seja bem-vindo ao suporte de TI.",
+                        "title": "Tudo certo, Carlos!",
                         "text": [
                             "Estamos disponíveis 24h por dia e 7 na semana. \n",
-                            "Estamos preparados para te ajudar com os seguintes serviços: \n",
+                            "Estamos preparados para te ajudar com as seguintes informações: \n",
                         ]
                     }]]
                 }
@@ -98,7 +101,7 @@ async function exibirMenu(tipo = '') {
             resposta['fulfillmentMessages'].push({
                 "text": {
                     "text" :[
-                        "Não foi possível recuperar a lista de suporte dos serviços disponíveis.",
+                        "Não foi possível recuperar a lista de informações disponíveis.",
                         "Desculpe-nos pelo transtorno!",
                         "Entre em contato conosco por telefone ☎ (18) 3226-1515."
                     ]
@@ -109,7 +112,7 @@ async function exibirMenu(tipo = '') {
                 "payload": {
                     "richContent": [[{
                         "type": "description",
-                        "title": "Não foi possível recuperar a lista de suporte dos serviços disponíveis.",
+                        "title": "Não foi possível recuperar a lista de informações disponíveis.",
                         "text": [
                             "Desculpe-nos pelo transtorno!",
                             "Entre em contato conosco por telefone ☎ (18) 3226-1515."
@@ -135,26 +138,26 @@ async function processarEscolha(dados, origem) { // Aplicar um try catch
 
     if (!global.dados[sessao]) {
         global.dados[sessao] = {
-            'servicos':[]
+            'infos':[]
         }
     }
 
-    let servicosSelecionados = dados.queryResult.parameters.Servico;
-    global.dados[sessao]['servicos'].push(...servicosSelecionados); // Gravar os dados na sessão
+    let infosSelecionadas = [dados.queryResult.parameters.informacoes];
+    global.dados[sessao]['infos'].push(...infosSelecionadas); // Gravar os dados na sessão
 
     let listaMensagens = [];
-    for (const serv of servicosSelecionados) {
-        const servico = new Servico();
-        const resultado = await servico.consultar(serv);
+    for (const inf of infosSelecionadas) {
+        const info = new Info();
+        const resultado = await info.consultar(inf);
 
         if (resultado.length > 0) {
-            listaMensagens.push(`✅ ${serv} registrado com sucesso! \n`);
+            listaMensagens.push(`✅ ${inf} registrado com sucesso! \n`);
         } else {
-            listaMensagens.push(`❌ O ${serv} não está disponível! \n`);
+            listaMensagens.push(`❌ O ${inf} não está disponível! \n`);
         }
     }
 
-    listaMensagens.push('Posso de ajudar em algo mais?');
+    listaMensagens.push('Posso te ajudar em algo mais?');
 
     if (origem) {
         resposta['fulfillmentMessages'].push({
@@ -177,39 +180,85 @@ async function processarEscolha(dados, origem) { // Aplicar um try catch
     return resposta;
 }
 
-async function registrarChamado(dados, origem) {
+async function devolverEscolhas(dados, origem) { // Aplicar um try catch
+    let resposta = {
+        "fulfillmentMessages": []
+    }
+
+    let listaMensagens = [];
+    const sessao = dados.session.split('/').pop();
+    const infoSelecionadas = global.dados[sessao]['infos'];
+
+    if (infoSelecionadas) {
+        const infoM = new Info();
+        listaMensagens.push('Essas são as informaçôes que solicitou: \n');
+
+        for (const inf of infoSelecionadas) {
+            const busca = await infoM.consultar(inf);
+
+            if (busca.length > 0) {
+                listaMensagens.push(`➡️ ${busca[0].descricao}: ${busca[0].status} \n`);
+            }
+        }
+
+        listaMensagens.push('Obrigado pela paciência, por favor avalie o atendimento com uma nota de 0 a 10.');
+    } else {
+        listaMensagens.push('Algo deu errado!');
+    }
+
+    if (origem) {
+        resposta['fulfillmentMessages'].push({
+            "text": {
+                "text" :[...listaMensagens]
+            }
+        });
+    } else {
+        resposta.fulfillmentMessages.push({
+            "payload": {
+                "richContent": [[{
+                    "type": "description",
+                    "title": "",
+                    "text": [...listaMensagens]
+                }]]
+            }
+        });
+    }
+
+    return resposta;
+}
+
+async function registrarLog(dados, origem) {
     const sessao = dados.session.split('/').pop();
     // Fique atento, será necessário recuperar o usuário identificado na sessão
     const usuario = {
         "cpf":"111.111.111-11"
     }
 
-    let listaDeServicos = [];
-    const servicosSelecionados = global.dados[sessao]['servicos'];
-    const servicoM = new Servico();
+    let listaDeInfos = [];
+    const infoSelecionadas = global.dados[sessao]['infos'];
+    const infoM = new Info();
 
-    for (const serv of servicosSelecionados) {
-        const busca = await servicoM.consultar(serv);
+    for (const inf of infoSelecionadas) {
+        const busca = await infoM.consultar(inf);
 
         if (busca.length > 0 ) {
-            listaDeServicos.push(busca[0]); // primeiro serviço da lista
+            listaDeInfos.push(busca[0]); // primeiro serviço da lista
         }
     }
 
-    const chamado = new Chamado(0, '', usuario, listaDeServicos);
+    const chamado = new LogInfo(0, usuario, '', listaDeInfos);
     await chamado.gravar();
 
     let resposta = {
         "fulfillmentMessages": []
     }
 
-    
     if (origem) {
         resposta['fulfillmentMessages'].push({
             "text": {
                 "text" :[
-                    `Chamado nº ${chamado.numero} registrado com sucesso. \n`, // O número está vindo como 0
-                    "Anote o número para consulta ou acompanhamento posterior"
+                    `Chegamos ao fim do atendimento. \n`, // O número está vindo como 0
+                    "Obrigado pela avaliação, espero ter sido útil."
                 ]
             }
         });
@@ -220,8 +269,8 @@ async function registrarChamado(dados, origem) {
                     "type": "description",
                     "title": "",
                     "text" :[
-                        `Chamado nº ${chamado.numero} registrado com sucesso. \n`, // O número está vindo como 0
-                        "Anote o número para consulta ou acompanhamento posterior"
+                        `Chegamos ao fim do atendimento. \n`, // O número está vindo como 0
+                        "Obrigado pela avaliação, espero ter sido útil."
                     ]
                 }]]
             }

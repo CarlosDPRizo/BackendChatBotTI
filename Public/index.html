@@ -4,15 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página inicial da empresa</title>
+
+    <style>
+      body {
+          background-image: url('/img/imagem-site.jpeg');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          margin: 0;
+          height: 100vh;
+          display: flex;
+      }
+  </style>
 </head>
 <body>
-    <h1>Seja bem-vindo a nossa empresa!</h1>
 </body>
 <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
 <df-messenger
   intent="WELCOME"
-  chat-title="Teste"
-  agent-id="72b68744-3d30-401b-9494-efe090f9b36a"
+  chat-title="Gestão de Sinistros"
+  agent-id="764d61d7-c36e-4f9c-933c-ccfea8452953"
   language-code="pt-br"
   chat-icon="/img/iconeChatBot.png"
 ></df-messenger>
