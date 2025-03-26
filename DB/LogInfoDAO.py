@@ -1,6 +1,6 @@
 import asyncio
-from conexao import conectar  # Importa a função de conexão já criada
-from model.log_info import LogInfo
+from Conexao import conectar  # Importa a função de conexão já criada
+from Model.LogInfo import LogInfo
 
 class LogInfoDAO:
     async def init(self):

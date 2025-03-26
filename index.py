@@ -1,7 +1,7 @@
 from flask import Flask
-from routes.rota_info import rota_info
-from routes.rota_df import rota_df
-import os
+from Routes.rotaInfo import rota_info
+from Routes.rotaDF import rota_df
+# import os
 from dotenv import load_dotenv
 
 # Carregar variáveis do arquivo .env

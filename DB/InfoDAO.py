@@ -1,7 +1,7 @@
 import asyncio
 import aiomysql
-from model.info import Info
-from conexao import conectar  # Função conectar previamente criada
+from Model.Info import Info
+from Conexao import conectar  # Função conectar previamente criada
 
 class InfoDAO:
     def __init__(self):

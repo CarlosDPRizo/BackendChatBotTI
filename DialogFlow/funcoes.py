@@ -1,4 +1,4 @@
-from model.info import Info
+from Model.Info import Info
 
 def criar_messenger_card():
     return {

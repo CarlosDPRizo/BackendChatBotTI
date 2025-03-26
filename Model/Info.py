@@ -1,4 +1,4 @@
-from db.info_dao import InfoDAO  # Importa InfoDAO previamente adaptado
+from DB.InfoDAO import InfoDAO  # Importa InfoDAO previamente adaptado
 
 class Info:
     def __init__(self, id=0, nome=None, descricao=None, status="", url_imagem=""):

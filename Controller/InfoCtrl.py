@@ -1,4 +1,4 @@
-from model.info import Info
+from Model.Info import Info
 
 class InfoCtrl:
     # Traduzir comandos HTTP em ações negociais

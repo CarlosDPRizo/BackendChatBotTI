@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from controller.info_controller import InfoCtrl
+from Controller.InfoCtrl import InfoCtrl
 
 # Instanciar o controlador
 serv_ctrl = InfoCtrl()

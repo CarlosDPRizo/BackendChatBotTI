@@ -1,4 +1,4 @@
-from db.log_info_dao import LogInfoDAO  # Importa LogInfoDAO previamente adaptado
+from DB.LogInfoDAO import LogInfoDAO  # Importa LogInfoDAO previamente adaptado
 
 class LogInfo:
     def __init__(self, fk_info_id=0, usuario=None, data='', infos=None):

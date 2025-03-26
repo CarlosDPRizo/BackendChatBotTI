@@ -1,6 +1,6 @@
-from model.info import Info
-from model.log_info import LogInfo
-from dialogflow.funcoes import obter_cards_infos
+from Model.Info import Info
+from Model.LogInfo import LogInfo
+from DialogFlow.funcoes import obter_cards_infos
 
 global_dados = {}  # Variável global para armazenar sessões
 

@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from controller.df_controller import DFController
+from Controller.DFCtrl import DFController
 
 # Criação do blueprint para as rotas
 rota_df = Blueprint('rota_df', __name__)
