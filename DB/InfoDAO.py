@@ -1,8 +1,8 @@
 import asyncio
 import aiomysql
-from Model.Info import Info
-from Conexao import conectar  # Função conectar previamente criada
-
+from DB.Conexao import conectar  # Função conectar previamente criada
+import warnings
+warnings.filterwarnings("ignore", message="Table '.*' already exists")  # 👈 Ignora avisos de tabela existente
 class InfoDAO:
     def __init__(self):
         # Inicializa a tabela ao instanciar o objeto
@@ -29,6 +29,8 @@ class InfoDAO:
             print(f"Não foi possível iniciar a tabela info: {error}")
 
     async def gravar(self, info):
+        from Model.Info import Info
+        
         if isinstance(info, Info):
             sql = """
                 INSERT INTO info (nome, descricao, status, urlImagem)
@@ -43,6 +45,8 @@ class InfoDAO:
                 info.id = cursor.lastrowid
 
     async def alterar(self, info):
+        from Model.Info import Info
+        
         if isinstance(info, Info):
             sql = """
                 UPDATE info
@@ -57,6 +61,8 @@ class InfoDAO:
                 await conexao.commit()
 
     async def excluir(self, info):
+        from Model.Info import Info
+        
         if isinstance(info, Info):
             sql = "DELETE FROM info WHERE id = %s"
             parametros = (info.id,)
@@ -82,6 +88,8 @@ class InfoDAO:
 
         lista_servicos = []
         for registro in registros:
+            from Model.Info import Info
+            
             info = Info(
                 id=registro["id"],
                 nome=registro["nome"],

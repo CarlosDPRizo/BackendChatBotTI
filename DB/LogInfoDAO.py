@@ -1,6 +1,5 @@
 import asyncio
-from Conexao import conectar  # Importa a função de conexão já criada
-from Model.LogInfo import LogInfo
+from DB.Conexao import conectar  # Importa a função de conexão já criada
 
 class LogInfoDAO:
     async def init(self):
@@ -27,6 +26,8 @@ class LogInfoDAO:
             conexao.close()
 
     async def gravar(self, log_info):
+        from Model.LogInfo import LogInfo
+        
         if isinstance(log_info, LogInfo):
             conexao = await conectar()
 

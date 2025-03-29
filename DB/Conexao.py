@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 # Carregar as variáveis de ambiente do arquivo .env
 load_dotenv()
 
-global pool_conexoes
+pool_conexoes = None
 
 async def conectar():
     global pool_conexoes

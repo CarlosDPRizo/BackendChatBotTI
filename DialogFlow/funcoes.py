@@ -1,4 +1,5 @@
 from Model.Info import Info
+from DB.InfoDAO import InfoDAO
 
 def criar_messenger_card():
     return {
@@ -33,8 +34,8 @@ def criar_custom_card():
 
 async def obter_cards_infos(tipo_card="custom"):
     lista_cards_servicos = []
-    info_model = Info()
-    infos = await info_model.consultar()  # Método de consulta previamente adaptado
+    info_dao = InfoDAO()
+    infos = await info_dao.consultar()  # Método de consulta previamente adaptado
 
     for info in infos:
         if tipo_card == "custom":

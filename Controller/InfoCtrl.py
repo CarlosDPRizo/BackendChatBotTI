@@ -1,4 +1,5 @@
 from Model.Info import Info
+from DB.InfoDAO import InfoDAO
 
 class InfoCtrl:
     # Traduzir comandos HTTP em ações negociais
@@ -108,23 +109,30 @@ class InfoCtrl:
                 "mensagem": "Formato não permitido!"
             }, 405
 
-    def consultar(self, requisicao):
+    async def consultar(self, requisicao):
+        print("a")
         termo_busca = requisicao.view_args.get("info")  # Recupera o termo da URL
+        
+        print(1)
         if requisicao.method == "GET":
-            info = Info(0)
+            info_dao = InfoDAO()
 
+            print(1.2)
             try:
-                lista_infos = info.consultar(termo_busca)
+                print(2.1)
+                lista_infos = await info_dao.consultar(termo_busca)
                 return {
                     "status": True,
                     "listaInfos": lista_infos
                 }, 200
             except Exception as error:
+                print(2.2)
                 return {
                     "status": False,
                     "mensagem": f"Não foi possível recuperar as infos: {error}"
                 }, 500
         else:
+            print(1.3)
             return {
                 "status": False,
                 "mensagem": "Método não permitido!"

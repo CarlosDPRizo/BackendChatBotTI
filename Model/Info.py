@@ -71,7 +71,3 @@ class Info:
     async def excluir(self):
         info_dao = InfoDAO()
         await info_dao.excluir(self)
-
-    async def consultar(self, termo_busca=""):
-        info_dao = InfoDAO()
-        return await info_dao.consultar(termo_busca)
