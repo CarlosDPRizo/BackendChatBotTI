@@ -1,6 +1,6 @@
 from flask import Blueprint, request, render_template
 # import sys
-# import os
+import os
 # sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 
 from Controller.InfoCtrl import InfoCtrl
@@ -9,11 +9,15 @@ from Controller.InfoCtrl import InfoCtrl
 serv_ctrl = InfoCtrl()
 
 # Criar o blueprint para as rotas
-rota_info = Blueprint('rota_info', __name__, template_folder='Public')
+rota_info = Blueprint(
+    'rota_info', 
+    __name__, 
+    template_folder=os.path.join(os.path.dirname(__file__), '../Public')
+)
 
 @rota_info.route('/home', methods=["GET"])
 def home():
-    print("Acessando a rota home")
+    print("Acessando a rota home", rota_info.template_folder)
     return render_template('index.html')
 
 # Configurar as rotas
