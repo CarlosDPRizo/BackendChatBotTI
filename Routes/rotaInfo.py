@@ -24,7 +24,9 @@ def home():
 @rota_info.route("/", methods=["GET"])
 def consultar_tudo():
     print("Acessando a rota consultar_tudo")
-    return serv_ctrl.consultar(request)
+    consultado = serv_ctrl.consultar(request)
+    print("Consultado:", consultado)
+    return consultado
 
 @rota_info.route("/<info>", methods=["GET"])
 def consultar_info(info):
