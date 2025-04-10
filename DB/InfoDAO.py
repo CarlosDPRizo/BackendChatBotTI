@@ -3,10 +3,13 @@ import aiomysql
 from DB.Conexao import conectar  # Função conectar previamente criada
 import warnings
 warnings.filterwarnings("ignore", message="Table '.*' already exists")  # 👈 Ignora avisos de tabela existente
-class InfoDAO:
+class InfoDAO:    
     def __init__(self):
-        # Inicializa a tabela ao instanciar o objeto
-        asyncio.run(self.init())
+        self.init()  # Método síncrono
+
+    def init(self):
+        # Código de inicialização síncrono
+        pass
 
     async def init(self):
         try:

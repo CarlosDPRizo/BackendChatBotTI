@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template
+from flask import Blueprint, request, render_template, jsonify
 # import sys
 import os
 # sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
@@ -6,7 +6,7 @@ import os
 from Controller.InfoCtrl import InfoCtrl
 
 # Instanciar o controlador
-serv_ctrl = InfoCtrl()
+info_ctrl = InfoCtrl()
 
 # Criar o blueprint para as rotas
 rota_info = Blueprint(
@@ -22,25 +22,25 @@ def home():
 
 # Configurar as rotas
 @rota_info.route("/", methods=["GET"])
-def consultar_tudo():
+async def consultar_tudo():
     print("Acessando a rota consultar_tudo")
-    consultado = serv_ctrl.consultar(request)
+    consultado = await info_ctrl.consultar(request)  # Aguarda a execução da corrotina
     print("Consultado:", consultado)
-    return consultado
+    return jsonify(consultado)  # Garante que o retorno seja serializável em JSON
 
 @rota_info.route("/<info>", methods=["GET"])
 def consultar_info(info):
     print("Acessando a rota consultar_info")
-    return serv_ctrl.consultar(request, info=info)
+    return info_ctrl.consultar(request, info=info)
 
 @rota_info.route("/", methods=["POST"])
 def gravar():
-    return serv_ctrl.gravar(request)
+    return info_ctrl.gravar(request)
 
 @rota_info.route("/", methods=["PUT"])
 def alterar():
-    return serv_ctrl.alterar(request)
+    return info_ctrl.alterar(request)
 
 @rota_info.route("/<id>", methods=["DELETE"])
 def excluir(id):
-    return serv_ctrl.excluir(request, id=id)
+    return info_ctrl.excluir(request, id=id)

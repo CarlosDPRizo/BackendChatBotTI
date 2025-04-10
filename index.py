@@ -1,11 +1,15 @@
 from flask import Flask
 from Routes.rotaInfo import rota_info
 from Routes.rotaDF import rota_df
-# import os
 from dotenv import load_dotenv
+from asgiref.wsgi import WsgiToAsgi
 
 # Carregar variáveis do arquivo .env
 load_dotenv()
+
+# Definir host e porta
+host = "localhost"
+porta = 3000
 
 app = Flask(__name__)
 
@@ -19,11 +23,11 @@ app.register_blueprint(rota_df, url_prefix="/webhook")
 # Servir arquivos estáticos
 app.static_folder = './Public'
 
-# Configuração de host e porta
-host = "localhost"
-porta = 3000
+# Adaptar para ASGI
+asgi_app = WsgiToAsgi(app)
 
-# Inicializar o servidor
+# Inicializar o servidor via ASGI
 if __name__ == "__main__":
+    import uvicorn
     print(f"Servidor escutando em http://{host}:{porta}")
-    app.run(host=host, port=porta, debug=True)
+    uvicorn.run(asgi_app, host=host, port=porta)
