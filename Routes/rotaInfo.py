@@ -25,13 +25,15 @@ def home():
 async def consultar_tudo():
     print("Acessando a rota consultar_tudo")
     consultado = await info_ctrl.consultar(request)  # Aguarda a execução da corrotina
-    print("Consultado:", consultado)
+    # print("Consultado:", consultado)
     return jsonify(consultado)  # Garante que o retorno seja serializável em JSON
 
 @rota_info.route("/<info>", methods=["GET"])
-def consultar_info(info):
+async def consultar_info(info):
     print("Acessando a rota consultar_info")
-    return info_ctrl.consultar(request, info=info)
+    consultado = await info_ctrl.consultar(request, info=info)
+    
+    return jsonify(consultado)
 
 @rota_info.route("/", methods=["POST"])
 def gravar():

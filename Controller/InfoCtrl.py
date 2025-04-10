@@ -109,9 +109,9 @@ class InfoCtrl:
                 "mensagem": "Formato não permitido!"
             }, 405
 
-    async def consultar(self, requisicao):
+    async def consultar(self, requisicao, info=None):
         print("a")
-        termo_busca = requisicao.view_args.get("info")  # Recupera o termo da URL
+        termo_busca = info  # Recupera o termo da URL
         
         print(1)
         if requisicao.method == "GET":
