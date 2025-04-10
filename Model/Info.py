@@ -56,7 +56,7 @@ class Info:
             "nome": self._nome,
             "descricao": self._descricao,
             "status": self._status,
-            "urlImagem": self._url_imagem
+            "url_imagem": self._url_imagem
         }
 
     # Métodos assíncronos para integração com o DAO

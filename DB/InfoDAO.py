@@ -75,20 +75,26 @@ class InfoDAO:
                 await cursor.execute(sql, parametros)
                 await conexao.commit()
 
-    async def consultar(self, termo_busca=""):
+    async def consultar(self, termo_busca=''):
         sql = """
             SELECT *
             FROM info
             WHERE descricao LIKE %s
             ORDER BY nome
         """
-        parametros = (f"%{termo_busca}%",)
+        parametros = (f"%{termo_busca or ''}%",)
 
         conexao = await conectar()
+        print("Conexão estabelecida:", conexao)
+
         async with conexao.cursor(aiomysql.DictCursor) as cursor:
+            print("SQL:", sql)
+            print("Parâmetros:", parametros)
+
             await cursor.execute(sql, parametros)
             registros = await cursor.fetchall()
 
+            print('registros:', registros)
         lista_servicos = []
         for registro in registros:
             from Model.Info import Info
@@ -98,8 +104,9 @@ class InfoDAO:
                 nome=registro["nome"],
                 descricao=registro["descricao"],
                 status=registro["status"],
-                urlImagem=registro["urlImagem"]
+                url_imagem=registro["urlImagem"]
             )
-            lista_servicos.append(info)
-
+            
+            lista_servicos.append(info.to_json())
+            
         return lista_servicos
