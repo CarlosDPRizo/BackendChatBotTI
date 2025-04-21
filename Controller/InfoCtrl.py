@@ -6,7 +6,7 @@ class InfoCtrl:
     # Conceito REST
     # Considerar o protocolo HTTP
 
-    def gravar(self, requisicao):
+    async def gravar(self, requisicao):
         if requisicao.method == "POST" and requisicao.is_json:
             dados = requisicao.get_json()
 
@@ -43,7 +43,7 @@ class InfoCtrl:
                 "mensagem": "Formato não permitido!"
             }, 405
 
-    def alterar(self, requisicao):
+    async def alterar(self, requisicao):
         if requisicao.method in ["PUT", "PATCH"] and requisicao.is_json:
             dados = requisicao.get_json()
 
@@ -79,7 +79,7 @@ class InfoCtrl:
                 "mensagem": "Formato não permitido!"
             }, 405
 
-    def excluir(self, requisicao):
+    async def excluir(self, requisicao):
         if requisicao.method == "DELETE" and requisicao.is_json:
             id = requisicao.view_args.get("id")  # O id deve ser informado na URL
 

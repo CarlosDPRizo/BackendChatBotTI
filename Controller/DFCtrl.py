@@ -1,4 +1,3 @@
-from Model.Info import Info
 from Model.LogInfo import LogInfo
 from DialogFlow.funcoes import obter_cards_infos
 from DB.InfoDAO import InfoDAO

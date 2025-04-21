@@ -1,3 +1,5 @@
+Iniciar o banco no Xampp (mudar pro Docker)
+
 Iniciar venv:
     .\venv\Scripts\Activate.ps1  
 
