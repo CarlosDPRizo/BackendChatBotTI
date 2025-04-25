@@ -16,9 +16,9 @@ async def conectar():
     else:
         # Cria um novo pool de conexões
         pool_conexoes = await aiomysql.create_pool(
-            host=os.getenv("DB_HOST", "localhost"),
-            user=os.getenv("DB_USER", "root"),
-            password=os.getenv("DB_PASSWORD", ""),
+            host=os.getenv("DB_HOST", "db"),
+            user=os.getenv("DB_USER", "user"),
+            password=os.getenv("DB_PASSWORD", "passwd"),
             db=os.getenv("DB_DATABASE", "chatbot"),
             minsize=1,         # Mínimo de conexões
             maxsize=50,        # Máximo de conexões no pool
