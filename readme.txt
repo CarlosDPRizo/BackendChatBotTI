@@ -9,6 +9,5 @@ Iniciar projeto:
 Rodar com Docker:
     docker-compose up --build
 
-    Restartar o Docker completamente:
-        docker-compose down
-        docker-compose up -d
+Derrubar a instãncia do Docker completamente:
+    docker-compose down
