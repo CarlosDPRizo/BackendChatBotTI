@@ -1,4 +1,3 @@
-from Model.Info import Info
 from DB.InfoDAO import InfoDAO
 
 def criar_messenger_card():

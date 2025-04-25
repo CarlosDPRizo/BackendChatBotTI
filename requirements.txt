@@ -1,0 +1,6 @@
+uvicorn
+flask
+aiomysql
+python-dotenv
+asgiref
+cryptography

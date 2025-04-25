@@ -5,3 +5,10 @@ Iniciar venv:
 
 Iniciar projeto:
     uvicorn index:asgi_app --host localhost --port 3000
+
+Rodar com Docker:
+    docker-compose up --build
+
+    Restartar o Docker completamente:
+        docker-compose down
+        docker-compose up -d

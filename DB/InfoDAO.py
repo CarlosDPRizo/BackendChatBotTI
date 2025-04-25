@@ -1,4 +1,3 @@
-import asyncio
 import aiomysql
 from DB.Conexao import conectar  # Função conectar previamente criada
 import warnings
