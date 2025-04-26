@@ -47,7 +47,8 @@ INSERT INTO chatbot.info (id, nome, descricao, status, urlImagem)
 		(2, 'Agendamento', 'Data de agendamento para entrada do veículo', '27/04/2025', 'https://img.icons8.com/?size=100&id=eJ0GpkPbhocR&format=png&color=000000'),
 		(3, 'Saída', 'Data de saída agendada do veículo', '30/04/2025', 'https://img.icons8.com/?size=100&id=24337&format=png&color=000000'),
 		(4, 'Andamento', 'Andamento do processo', 'Aguardando reparos', 'https://img.icons8.com/?size=100&id=39323&format=png&color=000000'),
-		(5, 'Responsável', 'Responsável pela ocorrência', 'Unidade Estacionamento 01', 'https://img.icons8.com/?size=100&id=JEOwyGQw7evS&format=png&color=000000');
+		(5, 'Responsável', 'Responsável pela ocorrência', 'Unidade Estacionamento 01', 'https://img.icons8.com/?size=100&id=JEOwyGQw7evS&format=png&color=000000'),
+		(6, 'Agendamento', 'Data de agendamento para entrada do veículo', '', 'https://img.icons8.com/?size=100&id=eJ0GpkPbhocR&format=png&color=000000');
 
 INSERT INTO chatbot.info_occurrence (fk_occ_id, fk_info_id)
 	VALUES (1, 1),

@@ -4,3 +4,6 @@ aiomysql
 python-dotenv
 asgiref
 cryptography
+tensorflow
+tensorflow_decision_forests
+pandas

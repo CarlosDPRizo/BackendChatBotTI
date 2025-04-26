@@ -139,7 +139,25 @@ class DFController:
         for inf in info_selecionadas:
             busca = await info_dao.consultar(inf)
             if busca:
-                lista_mensagens.append(f"➡️ {busca[0]['descricao']}: {busca[0]['status']} \n")
+                status = busca[0].get("status")
+
+            # Se status for vazio ou None, faz a previsão com o modelo 
+            # Utilização de valores estáticos para mostrar a viabilidade
+            if not status:
+                input_data = {
+                    "protocol": "2025-04-26",
+                    "data": "26/04/2025",
+                    "veiculo": "VW - VOLKSWAGEM - FOX 1.6 - 2005"
+                }
+
+                try:
+                    from predict import predict
+                    data_prevista = predict(input_data)
+                    status = f"⏱️ Previsão de agendamento: {data_prevista}"
+                except Exception as e:
+                    status = f"⚠️ Erro na previsão: {str(e)}"
+
+            lista_mensagens.append(f"➡️ {busca[0]['descricao']}: {status} \n")
 
         lista_mensagens.append("Obrigado pela paciência, por favor avalie o atendimento com uma nota de 0 a 10.")
 
