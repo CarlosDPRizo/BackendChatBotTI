@@ -7,7 +7,7 @@ df_control = DFController()
 
 # Definição da rota POST para processar intenções
 @rota_df.route('/', methods=['POST'])
-def processar_intencoes():
-    resultado = df_control.processar_intencoes(request)
+async def processar_intencoes():
+    resultado = await df_control.processar_intencoes(request)
 
     return jsonify(resultado)

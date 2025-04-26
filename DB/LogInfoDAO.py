@@ -41,7 +41,8 @@ class LogInfoDAO:
                             INSERT INTO log_info (fk_info_id, fk_usu_cpf, data)
                             VALUES (%s, %s, %s)
                         """
-                        parametros = (info.id, log_info.usuario.cpf, data)
+                        
+                        parametros = (info.id, log_info.usuario["cpf"], data)
                         await cursor.execute(sql_log_infos, parametros)
 
                     await conexao.commit()  # Confirma a transação

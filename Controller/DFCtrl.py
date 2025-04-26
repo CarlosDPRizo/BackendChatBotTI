@@ -24,7 +24,7 @@ class DFController:
 
             return resposta
 
-    async def exibir_menu(tipo=""):
+    async def exibir_menu(self, tipo=""):
         resposta = {"fulfillmentMessages": []}
         try:
             cards = await obter_cards_infos(tipo)
@@ -88,12 +88,16 @@ class DFController:
 
         return resposta
 
-    async def processar_escolha(dados, origem):
+    async def processar_escolha(self, dados, origem):
         sessao = dados["session"].split("/")[-1]
         if sessao not in global_dados:
             global_dados[sessao] = {"infos": []}
 
         infos_selecionadas = dados["queryResult"]["parameters"]["informacoes"]
+
+        if isinstance(infos_selecionadas, str):
+            infos_selecionadas = [infos_selecionadas]
+    
         global_dados[sessao]["infos"].extend(infos_selecionadas)
 
         lista_mensagens = []
@@ -126,7 +130,7 @@ class DFController:
 
         return resposta
 
-    async def devolver_escolhas(dados, origem):
+    async def devolver_escolhas(self, dados, origem):
         sessao = dados["session"].split("/")[-1]
         info_selecionadas = global_dados[sessao]["infos"]
 
@@ -157,16 +161,27 @@ class DFController:
 
         return resposta
 
-    async def registrar_log(dados, origem):
+    async def registrar_log(self, dados, origem):
         sessao = dados["session"].split("/")[-1]
         usuario = {"cpf": "111.111.111-11"}
         lista_infos = []
 
+        # Pra quando quiser gravar o valor da nota no banco de dados
+        # print("dados", dados['queryResult']['parameters']['number']);
         info_dao = InfoDAO()
         for inf in global_dados[sessao]["infos"]:
             busca = await info_dao.consultar(inf)
             if busca:
-                lista_infos.append(busca[0])
+                from Model.Info import Info
+                info_dict = busca[0]
+                info = Info(
+                    id=info_dict["id"],
+                    nome=info_dict["nome"],
+                    descricao=info_dict["descricao"],
+                    status=info_dict["status"],
+                    url_imagem=info_dict["url_imagem"]
+                )
+                lista_infos.append(info)
 
         chamado = LogInfo(0, usuario, "", lista_infos)
         await chamado.gravar()

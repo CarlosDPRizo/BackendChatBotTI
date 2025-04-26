@@ -110,7 +110,6 @@ class InfoCtrl:
             }, 405
 
     async def consultar(self, requisicao, info=None):
-        print("a")
         termo_busca = info  # Recupera o termo da URL
         
         print(1)

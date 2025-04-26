@@ -35,3 +35,23 @@ CREATE TABLE IF NOT EXISTS log_info(
 	constraint fk_info_log foreign key(fk_info_id) references info(id),
     constraint fk_usuario_log foreign key(fk_usu_cpf) references usuario(pk_usu_cpf)
 );
+
+INSERT INTO chatbot.usuario (pk_usu_cpf, nome)
+	VALUES ('111.111.111-11', 'Carlos');
+
+INSERT INTO chatbot.occurrence (id, protocol, `data`, fk_usu_cpf, veiculo, placa)
+	VALUES (1, '2025-04-26', '26/04/2025', '111.111.111-11', 'VW - VOLKSWAGEM - FOX 1.6 - 2005', 'FOX1I97');
+
+INSERT INTO chatbot.info (id, nome, descricao, status, urlImagem)
+	VALUES (1, 'Pagamento', 'Data agendada para pagamento', '30/04/2025', 'https://img.icons8.com/?size=100&id=215&format=png&color=000000'),
+		(2, 'Agendamento', 'Data de agendamento para entrada do veículo', '27/04/2025', 'https://img.icons8.com/?size=100&id=eJ0GpkPbhocR&format=png&color=000000'),
+		(3, 'Saída', 'Data de saída agendada do veículo', '30/04/2025', 'https://img.icons8.com/?size=100&id=24337&format=png&color=000000'),
+		(4, 'Andamento', 'Andamento do processo', 'Aguardando reparos', 'https://img.icons8.com/?size=100&id=39323&format=png&color=000000'),
+		(5, 'Responsável', 'Responsável pela ocorrência', 'Unidade Estacionamento 01', 'https://img.icons8.com/?size=100&id=JEOwyGQw7evS&format=png&color=000000');
+
+INSERT INTO chatbot.info_occurrence (fk_occ_id, fk_info_id)
+	VALUES (1, 1),
+		(1, 2),
+		(1, 3),
+		(1, 4),
+		(1, 5);

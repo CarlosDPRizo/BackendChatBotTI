@@ -39,17 +39,17 @@ async def obter_cards_infos(tipo_card="custom"):
     for info in infos:
         if tipo_card == "custom":
             card = criar_custom_card()
-            card["card"]["title"] = info.nome
-            card["card"]["subtitle"] = f"Descrição: {info.descricao}"
-            card["card"]["imageUri"] = info.urlImagem
-            card["card"]["buttons"][0]["postback"] = "https://www.ibati.com.br/"
+            card["card"]["title"] = info["nome"]
+            card["card"]["subtitle"] = f"Descrição: {info['descricao']}"
+            card["card"]["imageUri"] = info["url_imagem"]
+            card["card"]["buttons"][0]["postback"] = "https://guided-whale-initially.ngrok-free.app/info/home"
         else:
             card = criar_messenger_card()
-            card["title"] = info.nome
-            card["subtitle"] = f"Descrição: {info.descricao}"
-            card["image"]["src"]["rawUrl"] = info.urlImagem
-            card["actionLink"] = "https://www.ibati.com.br/"
-
-        lista_cards_servicos.append(card)
+            card["title"] = info["nome"]
+            card["subtitle"] = f"Descrição: {info['descricao']}"
+            card["image"]["src"]["rawUrl"] = info["url_imagem"]
+            card["actionLink"] = "https://guided-whale-initially.ngrok-free.app/info/home"
+    
+        lista_cards_servicos.append(card)  # ← agora deve funcionar!
 
     return lista_cards_servicos
